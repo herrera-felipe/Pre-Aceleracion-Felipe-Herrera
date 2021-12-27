@@ -34,7 +34,7 @@ public class MovieServiceImpl implements MovieService {
 
     public List<MovieDTO> getAllMovies() {
         List<MovieEntity> entities = this.movieRepository.findAll(); // traer las peliculas de la bd
-        List<MovieDTO> resultDTOList = this.movieMapper.movieEntityList2DTOList(entities); // convertir la lista de entidades a lista dto
+        List<MovieDTO> resultDTOList = this.movieMapper.movieEntityList2DTOList(entities, false); // convertir la lista de entidades a lista dto
         return resultDTOList;
     }
     
