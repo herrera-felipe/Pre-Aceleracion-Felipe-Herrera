@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,12 +30,24 @@ public class CharacterController {
         List<CharacterDTO> characterList = this.characterService.getAllCharacters();
         return ResponseEntity.ok().body(characterList);
     }
-    
+
     @GetMapping("basic")
     public ResponseEntity<List<CharacterBasicDTO>> getAllBasicData() {
         List<CharacterBasicDTO> characterBasicList = this.characterService.getAllCharactersBasicData();
         return ResponseEntity.ok().body(characterBasicList);
     }
+
+     // Busqueda por filtros
+     @GetMapping("filters")
+     public ResponseEntity<List<CharacterDTO>> getDetailsByFilters(
+             @RequestParam(required = false) String name,
+             @RequestParam(required = false) Integer age,
+             @RequestParam(required = false) List<Long> movies,
+             @RequestParam(required = false, defaultValue = "ASC") String order) {
+ 
+         List<CharacterDTO> characters = this.characterService.getByFilters(name, age, movies, order);
+         return ResponseEntity.ok(characters);
+     }
 
     @PostMapping
     public ResponseEntity<CharacterDTO> save(@RequestBody CharacterDTO dto) {
@@ -48,4 +61,5 @@ public class CharacterController {
         this.characterService.delete(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
 }
