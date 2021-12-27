@@ -64,7 +64,7 @@ public class MovieMapper {
         dto.setGenre(this.genreMapper.genreEntity2DTO(entity.getGenre()));
         // validacion para cargar o no los personajes
         if (loadCharacters) {
-            List<CharacterDTO> characterList = this.characterMapper.characterEntityList2DTOList(entity.getCharacters());
+            List<CharacterDTO> characterList = this.characterMapper.characterEntityList2DTOList(entity.getCharacters(), false);
             dto.setCharacters(characterList);
         }
         return dto;
@@ -87,10 +87,10 @@ public class MovieMapper {
     }
 
     // convierte una lista de entidades a lista dto
-    public List<MovieDTO> movieEntityList2DTOList(List<MovieEntity> entities) {
+    public List<MovieDTO> movieEntityList2DTOList(List<MovieEntity> entities, boolean loadCharacters) {
         List<MovieDTO> resultDTOList = new ArrayList<>();
         for (MovieEntity entity : entities) {
-            resultDTOList.add(this.movieEntity2DTO(entity, false));
+            resultDTOList.add(this.movieEntity2DTO(entity, loadCharacters));
         }
         return resultDTOList;
     }
