@@ -14,5 +14,7 @@ public interface CharacterService {
     public List<CharacterBasicDTO> getAllCharactersBasicData();
 
     public void delete(Long id);
+
+    public List<CharacterDTO> getByFilters(String name, Integer age, List<Long> movies, String order);
     
 }

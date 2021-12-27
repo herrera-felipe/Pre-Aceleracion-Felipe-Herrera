@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.disney.world.dto.CharacterBasicDTO;
 import com.disney.world.dto.CharacterDTO;
+import com.disney.world.dto.CharacterFiltersDTO;
 import com.disney.world.entity.CharacterEntity;
 import com.disney.world.mapper.CharacterMapper;
 import com.disney.world.repository.CharacterRepository;
+import com.disney.world.repository.specifications.CharacterSpecification;
 import com.disney.world.service.CharacterService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,13 @@ public class CharacterServiceImpl implements CharacterService {
 
     private CharacterRepository characterRepository;
 
+    private CharacterSpecification specification;
+
     @Autowired
-    public CharacterServiceImpl(CharacterMapper characterMapper, CharacterRepository characterRepository) {
+    public CharacterServiceImpl(CharacterMapper characterMapper, CharacterRepository characterRepository, CharacterSpecification specification) {
         this.characterMapper = characterMapper;
         this.characterRepository = characterRepository;
+        this.specification = specification;
     }
 
     public CharacterDTO save(CharacterDTO dto) {
@@ -34,7 +39,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     public List<CharacterDTO> getAllCharacters() {
         List<CharacterEntity> entities = this.characterRepository.findAll(); 
-        List<CharacterDTO> resultDTOList = this.characterMapper.characterEntityList2DTOList(entities);
+        List<CharacterDTO> resultDTOList = this.characterMapper.characterEntityList2DTOList(entities, false);
         return resultDTOList;
     }
 
@@ -45,9 +50,16 @@ public class CharacterServiceImpl implements CharacterService {
         return resultDTOList;
     }
 
+    // Metodo para la busqueda por filtros
+    public List<CharacterDTO> getByFilters(String name, Integer age, List<Long> movies, String order) {
+        CharacterFiltersDTO filtersDTO = new CharacterFiltersDTO(name, age, movies, order); // Instanciamos el dto con los filtros
+        List<CharacterEntity> entities = this.characterRepository.findAll(this.specification.getByFilters(filtersDTO)); // Buscamos segun filtros
+        List<CharacterDTO> resultDTOList = this.characterMapper.characterEntityList2DTOList(entities, true); // Convertimos la lista a DTO
+        return resultDTOList;
+    }
+
     // Metodo para el softDelete mediante la anotacion SQL en la entidad
     public void delete(Long id) {
         this.characterRepository.deleteById(id);
     }
-
 }
