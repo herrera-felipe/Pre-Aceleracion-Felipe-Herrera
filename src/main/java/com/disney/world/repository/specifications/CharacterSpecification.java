@@ -33,9 +33,9 @@ public class CharacterSpecification {
             }
 
             // Busqueda por edad
-            // if (StringUtils.hasLength(filtersDTO.getAge().toString())) {
-            //     predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("age")), "%" + filtersDTO.getAge() + "%"));
-            // }
+            if (filtersDTO.getAge() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("age"), filtersDTO.getAge()));
+            }
 
             // Busqueda por pelicula {id}
             if (!CollectionUtils.isEmpty(filtersDTO.getMovies())) {
