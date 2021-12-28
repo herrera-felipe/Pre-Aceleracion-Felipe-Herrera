@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -37,6 +38,17 @@ public class MovieController {
         List<MovieBasicDTO> movieList = this.movieService.getAllMoviesBasicData();
         return ResponseEntity.ok().body(movieList);
     }
+
+    // Busqueda por filtros
+    @GetMapping("filters")
+    public ResponseEntity<List<MovieDTO>> getDetailsByFilters(
+        @RequestParam(required = false) String title,
+        @RequestParam(required = false) List<Long> genre,
+        @RequestParam(required = false, defaultValue = "ASC") String order) {
+
+            List<MovieDTO> movies = this.movieService.getByFilters(title, genre, order);
+            return ResponseEntity.ok(movies);
+        }
 
     // EndPoint para guardar pelicculas
     @PostMapping
