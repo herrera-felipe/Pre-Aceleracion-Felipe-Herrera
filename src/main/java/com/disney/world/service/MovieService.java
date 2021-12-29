@@ -9,12 +9,14 @@ public interface MovieService {
 
     public MovieDTO save(MovieDTO dto);
 
+    public MovieDTO update(Long id, MovieDTO dto);
+
+    public void delete(Long id);
+
     public List<MovieDTO> getAllMovies();
 
     public List<MovieBasicDTO> getAllMoviesBasicData();
 
-    public void delete(Long id);
-
     public List<MovieDTO> getByFilters(String title, List<Long> genre, String order);
-    
+
 }
