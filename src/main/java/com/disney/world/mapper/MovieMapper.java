@@ -104,4 +104,20 @@ public class MovieMapper {
         return resultBasicDTOList;
     }
 
+    // Modificar Movie
+    public void movieEntityRefreshValues(MovieEntity entity, MovieDTO dto) {
+        entity.setImage(dto.getImage());
+        entity.setTitle(dto.getTitle());
+        entity.setCreationDate(this.string2LocalDate(dto.getCreationDate()));
+        entity.setQualification(dto.getQualification());
+        entity.setGenreId(dto.getGenreId());
+
+        // Buscamos si existe el genero por el Id de estar Ok seteamos
+        Optional<GenreEntity> resultGenre = genreRepository.findById(entity.getGenreId());
+        if (resultGenre.isPresent()) {
+            entity.setGenre(resultGenre.get());
+            // !!! si Id no existe dara genre null, Agregar manejo de Excepciones !!!
+        }
+    }
+
 }
