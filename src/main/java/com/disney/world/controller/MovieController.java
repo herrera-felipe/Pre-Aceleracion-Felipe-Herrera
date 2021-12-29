@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,15 +26,15 @@ public class MovieController {
     @Autowired
     private MovieService movieService;
 
-    // EndPoint para obtener las peliculas todos los atributos
-    @GetMapping()
+    // EndPoint para obtener las peliculas con todos los atributos
+    @GetMapping("details")
     public ResponseEntity<List<MovieDTO>> getAll() {
         List<MovieDTO> movieList = this.movieService.getAllMovies();
         return ResponseEntity.ok().body(movieList);
     }
 
     // EndPoint para obtener las peliculas solo campos: image, title, creationDate
-    @GetMapping("basic")
+    @GetMapping
     public ResponseEntity<List<MovieBasicDTO>> getAllBasic(){
         List<MovieBasicDTO> movieList = this.movieService.getAllMoviesBasicData();
         return ResponseEntity.ok().body(movieList);
@@ -50,11 +51,16 @@ public class MovieController {
             return ResponseEntity.ok(movies);
         }
 
-    // EndPoint para guardar pelicculas
     @PostMapping
     public ResponseEntity<MovieDTO> save(@RequestBody MovieDTO dto){
         MovieDTO movieSaved = this.movieService.save(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(movieSaved);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MovieDTO> update(@PathVariable Long id, @RequestBody MovieDTO dto) {
+        MovieDTO resultDTO =this.movieService.update(id, dto);
+        return ResponseEntity.ok().body(resultDTO);
     }
 
     // EndPoint para el softDelete
