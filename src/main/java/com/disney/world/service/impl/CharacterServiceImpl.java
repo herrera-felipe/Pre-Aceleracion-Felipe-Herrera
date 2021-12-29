@@ -1,6 +1,7 @@
 package com.disney.world.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.disney.world.dto.CharacterBasicDTO;
 import com.disney.world.dto.CharacterDTO;
@@ -37,6 +38,19 @@ public class CharacterServiceImpl implements CharacterService {
         return resultDTO;
     }
 
+    public CharacterDTO update(Long id, CharacterDTO dto) {
+        Optional<CharacterEntity> entity = this.characterRepository.findById(id); // Buscar el Character a modificar
+        // validar si existe
+        if (!entity.isPresent()) {
+            //throw new ParamNotFound("Invalid character id.")
+        }
+        
+        this.characterMapper.characterEntityRefreshValues(entity.get(), dto); // Modificar
+        CharacterEntity entitySaved = this.characterRepository.save(entity.get()); // Persistir
+        CharacterDTO resultDTO = this.characterMapper.characterEntity2DTO(entitySaved, false); // Convertir a DTO
+        return resultDTO;    
+    }
+
     public List<CharacterDTO> getAllCharacters() {
         List<CharacterEntity> entities = this.characterRepository.findAll(); 
         List<CharacterDTO> resultDTOList = this.characterMapper.characterEntityList2DTOList(entities, false);
@@ -62,4 +76,5 @@ public class CharacterServiceImpl implements CharacterService {
     public void delete(Long id) {
         this.characterRepository.deleteById(id);
     }
+
 }
