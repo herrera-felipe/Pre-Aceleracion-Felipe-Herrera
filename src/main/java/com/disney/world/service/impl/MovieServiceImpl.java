@@ -1,6 +1,7 @@
 package com.disney.world.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.disney.world.dto.MovieBasicDTO;
 import com.disney.world.dto.MovieDTO;
@@ -37,6 +38,19 @@ public class MovieServiceImpl implements MovieService {
         return resultDTO;
     }
 
+    public MovieDTO update(Long id, MovieDTO dto) {
+        Optional<MovieEntity> entity = this.movieRepository.findById(id);
+        
+        if (!entity.isPresent()) {
+            // throw new ParamNotFound("Invalid movie id.");
+        }
+
+        this.movieMapper.movieEntityRefreshValues(entity.get(), dto);
+        MovieEntity entitySaved =  this.movieRepository.save(entity.get());
+        MovieDTO resultDTO = this.movieMapper.movieEntity2DTO(entitySaved, false); 
+        return resultDTO;
+    }
+
     public List<MovieDTO> getAllMovies() {
         List<MovieEntity> entities = this.movieRepository.findAll(); // traer las peliculas de la bd
         List<MovieDTO> resultDTOList = this.movieMapper.movieEntityList2DTOList(entities, false); // convertir la lista de entidades a lista dto
@@ -62,4 +76,5 @@ public class MovieServiceImpl implements MovieService {
     public void delete(Long id) {
         this.movieRepository.deleteById(id);
     }
+
 }
