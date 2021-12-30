@@ -7,6 +7,7 @@ import com.disney.world.dto.CharacterBasicDTO;
 import com.disney.world.dto.CharacterDTO;
 import com.disney.world.dto.CharacterFiltersDTO;
 import com.disney.world.entity.CharacterEntity;
+import com.disney.world.exception.ParamNotFound;
 import com.disney.world.mapper.CharacterMapper;
 import com.disney.world.repository.CharacterRepository;
 import com.disney.world.repository.specifications.CharacterSpecification;
@@ -42,7 +43,7 @@ public class CharacterServiceImpl implements CharacterService {
         Optional<CharacterEntity> entity = this.characterRepository.findById(id); // Buscar el Character a modificar
         // validar si existe
         if (!entity.isPresent()) {
-            //throw new ParamNotFound("Invalid character id.")
+            throw new ParamNotFound("Invalid character id.");
         }
         
         this.characterMapper.characterEntityRefreshValues(entity.get(), dto); // Modificar

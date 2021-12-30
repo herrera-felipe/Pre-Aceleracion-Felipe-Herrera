@@ -7,6 +7,7 @@ import com.disney.world.dto.MovieBasicDTO;
 import com.disney.world.dto.MovieDTO;
 import com.disney.world.dto.MovieFiltersDTO;
 import com.disney.world.entity.MovieEntity;
+import com.disney.world.exception.ParamNotFound;
 import com.disney.world.mapper.MovieMapper;
 import com.disney.world.repository.MovieRepository;
 import com.disney.world.repository.specifications.MovieSpecification;
@@ -42,7 +43,7 @@ public class MovieServiceImpl implements MovieService {
         Optional<MovieEntity> entity = this.movieRepository.findById(id);
         
         if (!entity.isPresent()) {
-            // throw new ParamNotFound("Invalid movie id.");
+            throw new ParamNotFound("Invalid movie id.");
         }
 
         this.movieMapper.movieEntityRefreshValues(entity.get(), dto);

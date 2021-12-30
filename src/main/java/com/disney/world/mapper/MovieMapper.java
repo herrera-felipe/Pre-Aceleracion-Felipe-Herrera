@@ -11,6 +11,7 @@ import com.disney.world.dto.MovieBasicDTO;
 import com.disney.world.dto.MovieDTO;
 import com.disney.world.entity.GenreEntity;
 import com.disney.world.entity.MovieEntity;
+import com.disney.world.exception.ParamNotFound;
 import com.disney.world.repository.GenreRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,8 @@ public class MovieMapper {
         if (resultGenre.isPresent()) {
             GenreEntity genre = resultGenre.get();
             entity.setGenre(genre);
-            // !!! si Id no existe dara genre null, Agregar manejo de Excepciones !!!
+        } else {
+            throw new ParamNotFound("Invalid id Genre.");
         }
         return entity;
     }
@@ -116,7 +118,8 @@ public class MovieMapper {
         Optional<GenreEntity> resultGenre = genreRepository.findById(entity.getGenreId());
         if (resultGenre.isPresent()) {
             entity.setGenre(resultGenre.get());
-            // !!! si Id no existe dara genre null, Agregar manejo de Excepciones !!!
+        } else {
+            throw new ParamNotFound("Invalid id Genre.");
         }
     }
 
