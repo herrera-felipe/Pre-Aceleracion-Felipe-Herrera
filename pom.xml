@@ -8,6 +8,7 @@
 		<version>2.6.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>com.disney.world</groupId>
 	<artifactId>disney</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -19,6 +20,12 @@
 	</properties>
 
 	<dependencies>
+
+		<!-- Paquete javax.validation -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
