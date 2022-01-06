@@ -62,7 +62,7 @@ public class CharacterController {
         return ResponseEntity.ok().body(resultDTO);
     }
 
-    // EndPoint para el Soft Delete mediante id
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         this.characterService.delete(id);
