@@ -43,7 +43,7 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     public CharacterDTO update(Long id, CharacterDTO dto) {
-        Optional<CharacterEntity> entity = this.characterRepository.findById(id); // Buscar el Character a modificar
+        Optional<CharacterEntity> entity = this.characterRepository.findById(id);
         // validar si existe
         if (!entity.isPresent()) {
             throw new ParamNotFound("Invalid character id.");
