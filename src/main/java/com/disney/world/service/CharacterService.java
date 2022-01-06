@@ -19,4 +19,8 @@ public interface CharacterService {
 
     public List<CharacterDTO> getByFilters(String name, Integer age, List<Long> movies, String order);
 
+    public void addMovie(Long id, Long idMovie);
+
+    public void removeMovie(Long id, Long idMovie);
+
 }

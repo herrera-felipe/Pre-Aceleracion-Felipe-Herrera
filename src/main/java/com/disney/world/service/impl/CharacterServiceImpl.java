@@ -7,9 +7,11 @@ import com.disney.world.dto.CharacterBasicDTO;
 import com.disney.world.dto.CharacterDTO;
 import com.disney.world.dto.CharacterFiltersDTO;
 import com.disney.world.entity.CharacterEntity;
+import com.disney.world.entity.MovieEntity;
 import com.disney.world.exception.ParamNotFound;
 import com.disney.world.mapper.CharacterMapper;
 import com.disney.world.repository.CharacterRepository;
+import com.disney.world.repository.MovieRepository;
 import com.disney.world.repository.specifications.CharacterSpecification;
 import com.disney.world.service.CharacterService;
 
@@ -20,16 +22,17 @@ import org.springframework.stereotype.Service;
 public class CharacterServiceImpl implements CharacterService {
 
     private CharacterMapper characterMapper;
-
     private CharacterRepository characterRepository;
-
     private CharacterSpecification specification;
+    private MovieRepository movieRepository;
 
     @Autowired
-    public CharacterServiceImpl(CharacterMapper characterMapper, CharacterRepository characterRepository, CharacterSpecification specification) {
+    public CharacterServiceImpl(CharacterMapper characterMapper, CharacterRepository characterRepository, 
+            CharacterSpecification specification, MovieRepository movieRepository) {
         this.characterMapper = characterMapper;
         this.characterRepository = characterRepository;
         this.specification = specification;
+        this.movieRepository = movieRepository;
     }
 
     public CharacterDTO save(CharacterDTO dto) {
@@ -76,6 +79,23 @@ public class CharacterServiceImpl implements CharacterService {
     // Metodo para el softDelete mediante la anotacion SQL en la entidad
     public void delete(Long id) {
         this.characterRepository.deleteById(id);
+    }
+
+    // Metodo para agregar una pelicula al personaje
+    public void addMovie(Long id, Long idMovie) {
+        CharacterEntity character = this.characterRepository.getById(id);
+        character.getMovies().size(); 
+        MovieEntity movieEntity = this.movieRepository.getById(idMovie);
+        character.addMovie(movieEntity);
+        this.characterRepository.save(character);
+    }
+
+    public void removeMovie(Long id, Long idMovie) {
+        CharacterEntity character = this.characterRepository.getById(id);
+        character.getMovies().size(); 
+        MovieEntity movieEntity = this.movieRepository.getById(idMovie);
+        character.removeMovie(movieEntity);
+        this.characterRepository.save(character);
     }
 
 }
